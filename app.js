@@ -16,7 +16,7 @@ if(process.env.NODE_ENV === "production"){
         res.sendFile(path.resolve(__dirname,'client','build','index.html'));
     })
 }
-app.set()
+
 app.listen(port,()=>{
-    console.log(`Server Started Succesfully on port number ${PORT}`);
+    console.log(`Server Started Succesfully on port number ${port}`);
 })  
