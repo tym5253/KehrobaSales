@@ -1,1 +1,1 @@
-web:node /app.js
+web:npx nodemon app.js
