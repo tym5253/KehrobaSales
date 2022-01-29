@@ -45,8 +45,8 @@ const CreateTicket = () => {
       }
     }
   
-    useEffect(()=>{
-      callHomePage();
+    useEffect(async ()=>{
+      await callHomePage();
     },[])
 
     console.log(errors);
