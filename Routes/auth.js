@@ -134,7 +134,8 @@ router.get('/ViewTicket',authenticate,async (req,res)=>{
     }   
 })
 
-router.get('/CreateTicket',authenticate,(req,res)=>{
+router.get('/CreateTicket',authenticate, async (req,res)=>{
+    res.status(200).json({message:"authenticated"});
 })
 
 let updateId="";
