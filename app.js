@@ -6,7 +6,8 @@ import path from 'path';
 
 dotenv.config({path:'./config.env'});
 
-// const port = process.env.PORT || 5000 ;
+const host = '0.0.0.0';
+const port = process.env.PORT || 5000;
 const app= express()
 app.use(router);
 
@@ -18,6 +19,6 @@ if(process.env.NODE_ENV === "production"){
     })
 }
 
-app.listen(process.env.PORT,()=>{
+app.listen(port,host,()=>{
     console.log(`Server Started Succesfully on port number ${port}`);
 })  
