@@ -6,18 +6,18 @@ import path from 'path';
 
 dotenv.config({path:'./config.env'});
 
-const port = process.env.PORT || 5000 ;
+// const port = process.env.PORT || 5000 ;
 const app= express()
 app.use(router);
 
 if(process.env.NODE_ENV === "production"){
-    __dirname=path.resolve();
+    const __dirname=path.resolve();
     app.use(express.static(path.join(__dirname,"/client/build")));
     app.get("*",(req,res)=>{
         res.sendFile(path.resolve(__dirname,'client','build','index.html'));
     })
 }
 
-app.listen(port,()=>{
+app.listen(process.env.PORT,()=>{
     console.log(`Server Started Succesfully on port number ${port}`);
 })  
