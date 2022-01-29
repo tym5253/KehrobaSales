@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+html{
+    font-family: 'Rubik-light', sans-serif;
+}
+
+.loginBackground
+{
+position: absolute;
+height: 390px;
+left: 0px;
+top: 0px;
+background-color: #822d8f;
+background-image: url("https://www.transparenttextures.com/patterns/gplay.png");
+}
+
+.loginForm{
+position: absolute;
+top: 90%;  
+left: 50%; 
+transform: translate(-50%, -50%);
+background: #FFFFFF;
+box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.35);
+border-radius: 5px;
+padding: 20px;
+}
+
+.loginInput{
+    border-style: none;
+    border-bottom: 1px solid grey;
+}
+
+.loginButton{
+    background-color: #822d8f;
+    border-color:black
+}
+.loginButton:hover{
+    background-color: white;
+    color:black;
+    border-color:#822d8f
+}
+
+.loginButton:focus{
+    background-color:#822d8f;
+    border: solid 2px black;
+    color:white
+}
+
+
+.loginHeading{
+    color: #FFFFFF;
+    font-family: 'Rubik-light', sans-serif;
+    margin-bottom:0 ;
+}
+
+.navigation_link{
+    border: solid 1px black;
+    margin-right: 1rem;
+    color: black;
+    text-decoration: none;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    border-radius: 5px;
+    background-color: white;
+    font-weight: bold;
+}
+.formButton{
+    background-color:#822d8f;
+    border: none;
+}
+.formButton:hover{
+    background-color:#FFFFFF;
+    border: solid 2px black;
+    color:black
+}
+.formButton:focus{
+    background-color:#822d8f;
+    border: solid 2px black;
+    color:white
+}
+.navigation_link:hover{
+    color: #822d8f;
+}
+
+.formLabel{
+    font-weight: bold;
+}
+
+.error{
+    margin-top: 0.5rem;
+    color: red;
+}
+
+.ticket{
+    display:inline-block;
+}
+
+
+thead button.ascending::after {
+    content: '🡫';
+    display: inline-block;
+    margin-left: 1em;
+  }
+  
+  thead button.descending::after {
+    content: '🡩';
+    display: inline-block;
+    margin-left: 1em;
+  }
+.cardButton{
+    width: 49%
+}
+@media(max-width:998px){
+    html{
+        font-size: 95%;
+    }
+}
+@media(max-width:768px){
+    html{
+        font-size: 75%;
+    }
+}
