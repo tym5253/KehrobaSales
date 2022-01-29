@@ -27,7 +27,7 @@ router.post('/register', async (req,res)=>{
     const {cName,fName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea}=req.body;
     
     try{
-    const clientTicket = ticket({cName,fName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea})
+    const clientTicket = await ticket({cName,fName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea})
 
     const createTicket=await clientTicket.save();
     if (createTicket){
