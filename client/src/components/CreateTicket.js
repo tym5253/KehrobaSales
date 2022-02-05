@@ -17,7 +17,10 @@ const CreateTicket = () => {
     statusRadio:"Pending",
     delDate:"",
     fSolutionTextArea:"",
-    commentTextArea:""
+    commentTextArea:"",
+    finalCharges:"",
+    billRaised:false,
+    receivedPayment:false
   }});
 
 
@@ -57,7 +60,7 @@ const CreateTicket = () => {
       <Container  className="p-4  " style={{border: "1px solid #000000",boxSizing: "border-box",boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",borderRadius: "5px"}}>
         <Form method='POST' onSubmit={handleSubmit(async (values)=>{
           try{
-          const {cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea}=values;
+          const {cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea,finalCharges,billRaised,receivedPayment}=values;
           const res=await fetch('/register',{
             method:"POST",
             headers:{
@@ -74,7 +77,10 @@ const CreateTicket = () => {
                 statusRadio:statusRadio,
                 delDate:delDate,
                 fSolutionTextArea:fSolutionTextArea,
-                commentTextArea:commentTextArea
+                commentTextArea:commentTextArea,
+                finalCharges:finalCharges,
+                billRaised:billRaised,
+                receivedPayment:receivedPayment
             })
         });
     const data= res.status;
@@ -108,10 +114,9 @@ const CreateTicket = () => {
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formPhNumber">
               <Form.Label className="formLabel">Phone Number:</Form.Label>
-              <Form.Control type="Number" placeholder="Phone Number" name="phNumber"  {...register("phNumber",{required:"Please Fill Value",minLength:{
-                value:10,
-                message:'Enter Valid 10 digit Number'
-              }})}/>
+              <Form.Control type="Number" placeholder="Phone Number" name="phNumber"  {...register("phNumber",{required:'Enter Valid 10 Digit Phone Number',pattern:{
+                value:/^[0-9]{10}$/,
+                message:"Enter Valid 10 Digit Phone Number"}})}/>
               <p className="error">{errors.phNumber?.message}</p>
             </Form.Group>
             <Form.Group as={Col} controlId="formSysName">
@@ -216,6 +221,38 @@ const CreateTicket = () => {
                   {...register("fSolutionTextArea")}  
                 />
             </Form.Group>
+          </Row>
+          <Row className="mb-3">
+            <Col sm lg={6}>
+            <Form.Group as={Col} controlId="formFinalCharges">
+              <Form.Label className="formLabel">Final Amount Charged:</Form.Label>
+              <Form.Control type="Number" placeholder="Amount" name="finalCharges"  {...register("finalCharges")}/>
+            </Form.Group>
+            </Col>
+            <Col sm lg={2} className="m-auto">
+            <Form.Group  controlId="formBillRaised" >
+              <Form.Check 
+              inline
+              type="checkbox" 
+              name="billRaised"
+              label="Bill Raised"
+              id='inline-checkbox-billRaised'
+              value={true} 
+              {...register("billRaised")} />
+            </Form.Group>
+            </Col>
+            <Col sm lg={3} className="m-auto">
+            <Form.Group controlId="formRecPayment">
+              <Form.Check 
+              inline 
+              type="checkbox" 
+              name="receivedPayment"
+              label="Received Payment"
+              id='inline-checkbox-receivedPayment'
+              value={true}
+              {...register("receivedPayment")} />
+            </Form.Group>
+            </Col>
           </Row>
           <Row className="mb-3">
             <Form.Group className="mb-3" controlId="formCommentsTextArea">

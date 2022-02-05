@@ -9,7 +9,7 @@ import ViewTicket from './components/ViewTicket';
 import CreateTicket from './components/CreateTicket';
 import Signout from './components/Signout';
 import ViewTicketData from './components/ViewTicketData';
-import './App.css'
+import './App.css';
 import ViewClosedTicketData from './components/ViewClosedTicketData';
 
 function App() {

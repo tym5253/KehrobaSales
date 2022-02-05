@@ -99,17 +99,32 @@ padding: 20px;
 thead button.ascending::after {
     content: '🡫';
     display: inline-block;
-    margin-left: 1em;
+    margin-left: 0.5rem;
   }
   
   thead button.descending::after {
     content: '🡩';
     display: inline-block;
-    margin-left: 1em;
+    margin-left: 0.5rem;
   }
 .cardButton{
     width: 49%
 }
+
+.toggleButton{
+    background-color: #FFFFFF;
+    color:#822d8f;
+    border:1px #822d8f solid
+}
+
+.toggleButton:hover{
+    background-color:#822d8f;
+    border: none; 
+}
+
+
+
+
 @media(max-width:998px){
     html{
         font-size: 95%;

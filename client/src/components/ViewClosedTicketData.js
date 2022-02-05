@@ -17,7 +17,10 @@ const ViewClosedTicketData = () => {
     statusRadio:"",
     delDate:"",
     fSolutionTextArea:"",
-    commentTextArea:""
+    commentTextArea:"",
+    finalCharges:"",
+    billRaised:"",
+    receivedPayment:""
   }});
   const navigate=useNavigate();
   const callHomePage = async () =>{
@@ -191,6 +194,40 @@ const ViewClosedTicketData = () => {
                   disabled
                 />
             </Form.Group>
+          </Row>
+          <Row className="mb-3">
+            <Col sm lg={6}>
+            <Form.Group as={Col} controlId="formFinalCharges">
+              <Form.Label className="formLabel">Final Amount Charged:</Form.Label>
+              <Form.Control type="Number" placeholder="Amount" name="finalCharges"  {...register("finalCharges")} disabled/>
+            </Form.Group>
+            </Col>
+            <Col sm lg={2} className="m-auto">
+            <Form.Group  controlId="formBillRaised" >
+              <Form.Check 
+              inline
+              type="checkbox" 
+              name="billRaised"
+              label="Bill Raised"
+              id='inline-checkbox-billRaised'
+              value={true} 
+              disabled
+              {...register("billRaised")} />
+            </Form.Group>
+            </Col>
+            <Col sm lg={3} className="m-auto">
+            <Form.Group controlId="formRecPayment">
+              <Form.Check 
+              type="checkbox" 
+              name="receivedPayment"
+              label="Received Payment"
+              id='inline-checkbox-receivedPayment'
+              value={true}
+              inline 
+              disabled
+              {...register("receivedPayment")} />
+            </Form.Group>
+            </Col>
           </Row>
           <Row className="mb-3">
             <Form.Group className="mb-3" controlId="formCommentsTextArea">

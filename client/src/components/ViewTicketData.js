@@ -18,7 +18,10 @@ const ViewTicketData = () => {
         statusRadio:"",
         delDate:"",
         fSolutionTextArea:"",
-        commentTextArea:""
+        commentTextArea:"",
+        finalCharges:"",
+        billRaised:"",
+        receivedPayment:""
       }});
       const navigate=useNavigate();
       const callHomePage = async () =>{
@@ -65,7 +68,7 @@ const ViewTicketData = () => {
       <Form method='POST'onSubmit={handleSubmit(async (values)=>{
           try{
             
-          const {cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea}=values;
+          const {cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea,finalCharges,billRaised,receivedPayment}=values;
           const id= ticketData._id;
           const res=await fetch('/UpdateTicketData',{
             method:"POST",
@@ -73,7 +76,21 @@ const ViewTicketData = () => {
                 "Content-Type":"application/json"
             },
             body:JSON.stringify({
-                id,cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea
+                id:id,
+                cName:cName.toUpperCase(),
+                emailID:emailID,
+                phNumber:phNumber,
+                sysName:sysName,
+                probTextArea:probTextArea,
+                pSolutionTextArea:pSolutionTextArea,
+                quotaionTextArea:quotaionTextArea,
+                statusRadio:statusRadio,
+                delDate:delDate,
+                fSolutionTextArea:fSolutionTextArea,
+                commentTextArea:commentTextArea,
+                finalCharges:finalCharges,
+                billRaised:billRaised,
+                receivedPayment:receivedPayment
             })
         });
     const data= res.status;
@@ -106,10 +123,9 @@ const ViewTicketData = () => {
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formPhNumber">
               <Form.Label className="formLabel">Phone Number:</Form.Label>
-              <Form.Control type="Number" placeholder="Phone Number" name="phNumber"  {...register("phNumber",{required:"Please Fill Value",minLength:{
-                value:10,
-                message:'Enter Valid 10 digit Number'
-              }})}/>
+              <Form.Control type="Number" placeholder="Phone Number" name="phNumber"  {...register("phNumber",{required:'Enter Valid 10 Digit Phone Number',pattern:{
+                value:/^[0-9]{10}$/,
+                message:"Enter Valid 10 Digit Phone Number"}})}/>
               <p className="error">{errors.phNumber?.message}</p>
             </Form.Group>
             <Form.Group as={Col} controlId="formSysName">
@@ -214,6 +230,36 @@ const ViewTicketData = () => {
                   {...register("fSolutionTextArea")}  
                 />
             </Form.Group>
+          </Row>
+          <Row className="mb-3">
+            <Col sm lg={6}>
+            <Form.Group as={Col} controlId="formFinalCharges">
+              <Form.Label className="formLabel">Final Amount Charged:</Form.Label>
+              <Form.Control type="Number" placeholder="Amount" name="finalCharges"  {...register("finalCharges")}/>
+            </Form.Group>
+            </Col>
+            <Col sm lg={2} className="m-auto">
+            <Form.Group  controlId="formBillRaised" >
+              <Form.Check 
+              inline
+              type="checkbox" 
+              name="billRaised"
+              label="Bill Raised"
+              id='inline-checkbox-billRaised'
+              {...register("billRaised")} />
+            </Form.Group>
+            </Col>
+            <Col sm lg={3} className="m-auto">
+            <Form.Group controlId="formRecPayment">
+              <Form.Check 
+              type="checkbox" 
+              name="receivedPayment"
+              label="Received Payment"
+              id='inline-checkbox-receivedPayment'
+              inline 
+              {...register("receivedPayment")} />
+            </Form.Group>
+            </Col>
           </Row>
           <Row className="mb-3">
             <Form.Group className="mb-3" controlId="formCommentsTextArea">

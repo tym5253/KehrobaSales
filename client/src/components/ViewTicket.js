@@ -13,7 +13,7 @@ const ViewTicket = () => {
     const [closedticketData,setClosedTicketData]=useState([]);
     const callHomePage = async () =>{
         try{
-          const res = await fetch('/ViewTicket',{
+          const res = await fetch('/ViewTicket/closed',{
               method:'GET',
               headers:{
                   Accept:"application/json",
@@ -135,12 +135,30 @@ const ViewTicket = () => {
                     console.log(err);
                 }
             }}>Search</Button>
+            <Button className="ms-2 formButton" onClick={async ()=>{
+                try{
+                const res = await fetch('/resetViewClosedTicket',{
+              method:'GET',
+              headers:{
+                  Accept:"application/json",
+                  "Content-Type":"application/json"
+              },
+              credentials:"include"
+          });
+          const data = await res.json();
+          setClosedTicketData(data);
+          if(res.status===200){
+              window.location.reload();
+          }
+          }catch(err){
+              console.log(err);
+          }
+          }}>
+                Reset
+            </Button>
                     </Col>
                 </Row>
             </Form>
-        </Col>
-        <Col>
-            
         </Col>
     </Row>
         <Row className='mt-5 ms-4 me-4'>
@@ -155,6 +173,7 @@ const ViewTicket = () => {
               className={getClassNamesFor('cName')+ ' formButton'}>Company Name/First Name</Button></th>
                     <th>System Name</th>
                     <th>Problem</th>
+                    <th>Received Payment</th>
                     <th>View</th>
                 </tr>
             </thead>
@@ -163,9 +182,10 @@ const ViewTicket = () => {
                 {closedticketData.map((item)=>{
                     return(<tr key={item.data}>
                             <td>{moment(item.creationDate).format('DD/MM/YYYY')}</td>
-                            <td>{item.cName?item.cName:item.fName}</td>
+                            <td>{item.cName}</td>
                             <td>{item.sysName}</td>
                             <td>{item.probTextArea&&item.probTextArea.slice(0,30)+'...'}</td>
+                            <td>{item.receivedPayment===true?'✔':'✘'}</td>
                             <td className='text-center'>
                                 <Button className='formButton' onClick={async ()=>{
                                                                         const id= item._id;

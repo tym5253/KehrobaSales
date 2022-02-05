@@ -22,14 +22,16 @@ const date = new Date();
 
 
 router.post('/register', async (req,res)=>{
-
-  
-    const {cName,fName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea}=req.body;
+    console.log("before saving in database")
+    console.log(req.body);
+    const {cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea,finalCharges,billRaised,receivedPayment}=req.body;
     
     try{
-    const clientTicket = await ticket({cName,fName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea})
+    const clientTicket = await ticket({cName,emailID,phNumber,sysName,probTextArea,pSolutionTextArea,quotaionTextArea,statusRadio,delDate,fSolutionTextArea,commentTextArea,finalCharges,billRaised,receivedPayment})
 
     const createTicket=await clientTicket.save();
+    console.log("after saving in database")
+    console.log(createTicket)
     if (createTicket){
         res.status(201).json({message:"Ticket Created Succesfully!"})
     }else{
@@ -72,7 +74,7 @@ router.post('/signin', async (req,res)=>{
             if(passMatch){
             const token = jwt.sign({_id:adminLogin._id},process.env.SECRET_KEY);
             res.cookie('jwtToken',token,{
-                expires: new Date(Date.now()+86400000),
+                expires: new Date(Date.now()+2592000000),
                 httpOnly:true
                 });
             res.status(201).json({message:"Login Successfull!!"});
@@ -111,7 +113,8 @@ router.get('/logout', (req,res)=>{
 
 router.get('/Home',authenticate, async (req,res)=>{
     try{   
-    const openTicket = await ticket.find({closed:false},{cName:1,fName:1,statusRadio:1,sysName:1,probTextArea:1,delDate:1});
+    const openTicket = await ticket.find({closed:false},{cName:1,statusRadio:1,sysName:1,probTextArea:1,delDate:1,billRaised:1,receivedPayment:1}).sort({delDate:1});
+    console.log(openTicket);
     if(openTicket){
         res.status(200).json(openTicket);
     }
@@ -123,9 +126,9 @@ router.get('/Home',authenticate, async (req,res)=>{
 router.get('/References',authenticate,(req,res)=>{
 })
 
-router.get('/ViewTicket',authenticate,async (req,res)=>{
+router.get('/ViewTicket/closed',authenticate,async (req,res)=>{
     try{
-        const getClosedTicket = await ticket.find({closed:true},{cName:1,fName:1,sysName:1,probTextArea:1,creationDate:1});
+        const getClosedTicket = await ticket.find({closed:true},{cName:1,fName:1,sysName:1,probTextArea:1,creationDate:1,receivedPayment:1});
         if(getClosedTicket){
             res.status(200).json(getClosedTicket);
         }
@@ -146,6 +149,8 @@ router.post('/ViewUpdateTicket',(req,res)=>{
     }
 
 })
+
+
 router.get('/ViewTicketData',authenticate,async (req,res)=>{
     try{
     const data = await ticket.findOne({_id:updateId.id});
@@ -223,26 +228,26 @@ router.post('/ReopenClosedTicket',async(req,res)=>{
     }
 });
 router.post('/searchClosedTicketData',async (req,res)=>{
-    const {Name,cDate}=req.body;
+    const {Name,dDate}=req.body;
     try{
     if(Name===""){
-        const searchDate = await ticket.find({closed:true,creationDate:cDate});
+        const searchDate = await ticket.find({closed:true,creationDate:dDate});
         console.log(searchDate);
         if(searchDate){
             res.status(200).json(searchDate)
         }else{
             res.status(500).json({message:'date not found'});
         }
-    }else if(cDate===""){
+    }else if(dDate===""){
 
-        const searchName = await ticket.find({closed:true,cName:Name});
+        const searchName = await ticket.find({closed:true,cName:{$regex:Name,$options:'i'}});
         if(searchName){
             res.status(200).json(searchName);
         }else{
             res.status(500).json({message:'date not found'});
         }  
     }else{
-        const search = await ticket.find({closed:true,cName:Name,creationDate:cDate});
+        const search = await ticket.find({closed:true,cName:{$regex:Name,$options:'i'},creationDate:dDate});
         if(search){
             res.status(200).json(search);
         }else{
@@ -253,4 +258,57 @@ router.post('/searchClosedTicketData',async (req,res)=>{
         console.log(err);
     }
 })
+router.get('/resetViewClosedTicket',async (req,res)=>{
+    try{
+        const getClosedTicket = await ticket.find({closed:true},{cName:1,fName:1,sysName:1,probTextArea:1,creationDate:1,receivedPayment:1});
+        if(getClosedTicket){
+            res.status(200).json(getClosedTicket);
+        }
+    }catch(err){
+        console.log(err);
+    }   
+})
+
+router.post('/searchOpenTicketData',async (req,res)=>{
+    const {Name,dDate}=req.body;
+    try{
+    if(Name===""){
+        const searchDate = await ticket.find({closed:false,delDate:dDate});
+        console.log(searchDate);
+        if(searchDate){
+            res.status(200).json(searchDate)
+        }else{
+            res.status(500).json({message:'date not found'});
+        }
+    }else if(dDate===""){
+
+        const searchName = await ticket.find({closed:false,cName:{$regex:Name,$options:'i'}});
+        if(searchName){
+            res.status(200).json(searchName);
+        }else{
+            res.status(500).json({message:'date not found'});
+        }  
+    }else{
+        const search = await ticket.find({closed:false,cName:{$regex:Name,$options:'i'},delDate:dDate});
+        if(search){
+            res.status(200).json(search);
+        }else{
+            res.status(500).json({message:'data not found'})    
+        }
+    }
+    }catch(err){
+        console.log(err);
+    }
+})
+    router.get('/resetViewOpenTicket',async (req,res)=>{
+        try{
+        const openTicket = await ticket.find({closed:false},{cName:1,statusRadio:1,sysName:1,probTextArea:1,delDate:1,billRaised:1,receivedPayment:1}).sort({delDate:1});
+        if(openTicket){
+            res.status(200).json(openTicket);
+        }
+    }catch(err){
+        console.log(err);
+    }   
+});
+
 export default router;

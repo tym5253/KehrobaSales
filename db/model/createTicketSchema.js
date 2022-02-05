@@ -45,6 +45,15 @@ const  ticketSchema = new mongoose.Schema({
     creationDate:{
         default:date,
         type:Date
+    },
+    finalCharges:{
+        type:Number
+    },
+    billRaised:{
+        type:Boolean
+    },
+    receivedPayment:{
+        type:Boolean
     }
 })
 const Ticket = mongoose.model('TICKET', ticketSchema)

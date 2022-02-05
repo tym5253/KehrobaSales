@@ -1,14 +1,13 @@
 import React from 'react';
-import {Button, Card,CloseButton,Row} from 'react-bootstrap';
-import {useNavigate} from 'react-router-dom';
-import moment from 'moment'
+import moment from 'moment';
+import { CloseButton,Button } from 'react-bootstrap';
+import { useNavigate } from "react-router-dom";
 
-function ViewOpenTicket(props){
-  const navigate= useNavigate();
+const ViewOpenTicketTableView = (props) => {
+  const navigate=useNavigate();
   return (
-    <Card style={{ width: '18rem'}} className="m-4 ticket">
-    <Card.Body className='mt-0 '>
-    <Row className='d-flex justify-content-end'><CloseButton className=' me-2' onClick={async ()=>{  try{
+    <tr>
+      <td className='text-center'>{<CloseButton className='me-2' onClick={async ()=>{  try{
               const id= props.id;
               const res=await fetch('/CloseTicket',{
                   method:"POST",
@@ -27,18 +26,14 @@ function ViewOpenTicket(props){
               }catch(err){
                 console.log(err);
               }
-    }}/></Row>
-      <Card.Text >{props.delivery? moment(props.delivery).format('DD/MM/YYYY') : null }</Card.Text>
-      <Card.Title>{props.cname}</Card.Title>
-      {props.status === "Pending"&&<Card.Subtitle className="mb-2" style={{color:"orange"}}>{props.status}</Card.Subtitle>}
-      {props.status === "Not Done"&&<Card.Subtitle className="mb-2" style={{color:"red"}}>{props.status}</Card.Subtitle>}
-      {props.status === "Done"&&<Card.Subtitle className="mb-2" style={{color:"green"}}>{props.status}</Card.Subtitle>}
-      {props.status === "Outsourced"&&<Card.Subtitle className="mb-2" style={{color:"yellow"}}>{props.status}</Card.Subtitle>}
-      <Card.Text>{props.system}</Card.Text>
-      <Card.Text>
-       {props.problem.slice(0,30)}
-      </Card.Text>
-            <Button className='cardButton me-1' onClick={async ()=>{
+    }}/>}</td>
+      <td>{props.delivery? moment(props.delivery).format('DD/MM/YYYY') : " " }</td>
+      <td>{props.cname}</td>
+      <td>{props.system}</td>
+      <td>{props.problem.slice(0,30)+"..."}</td>
+      <td>{props.billraised===true?'✔':'✘'}</td>
+      <td>{props.payment===true?'✔':'✘'}</td>
+      <td> <Button  onClick={async ()=>{
               const id= props.id;
               try{
               navigate('/ViewTicketData');
@@ -58,8 +53,8 @@ function ViewOpenTicket(props){
               }catch(err){
                 console.log(err);
               }
-            }} >View</Button>
-            <Button className='cardButton' variant='danger' onClick={async ()=>{
+            }} >View</Button></td>
+      <td><Button   variant='danger' onClick={async ()=>{
               try{
               const id= props.id;
               const res=await fetch('/DeleteTicket',{
@@ -79,10 +74,10 @@ function ViewOpenTicket(props){
               }catch(err){
                 console.log(err);
               }
-            }}>Delete</Button>
-    </Card.Body>
-  </Card>
-  );
-}
+            }}>Delete</Button></td>
+    </tr>
 
-export default ViewOpenTicket;
+  );
+};
+
+export default ViewOpenTicketTableView;
